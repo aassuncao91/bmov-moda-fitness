@@ -398,6 +398,28 @@
   .subcat-grid { grid-template-columns: 1fr; gap: 16px; }
 }
 
+/* ── SECTION BREAK (Peças Avulsas) ── */
+.cat-section-break {
+  padding: 60px 0 20px;
+  text-align: center;
+}
+.cat-section-break__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--black);
+  line-height: 1.15;
+  margin: 12px 0 16px;
+}
+.cat-section-break__title em { color: var(--brown); font-style: italic; }
+.cat-section-break__sub {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
 /* ── DIVIDER ── */
 .cat-divider {
   height: 1px;
