@@ -51,6 +51,50 @@ if (form) {
   });
 }
 
+// ── IMAGE GALLERY ───────────────────────────────────────────
+function initGallery(galleryId) {
+  const gallery = document.getElementById(galleryId);
+  if (!gallery) return;
+
+  const imgs = [...gallery.querySelectorAll('img')];
+  const dotsWrap = gallery.querySelector('.cat-gallery-dots');
+  let current = 0;
+  let timer;
+
+  // build dots
+  imgs.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Foto ${i + 1}`);
+    d.addEventListener('click', e => { e.stopPropagation(); goTo(i); resetTimer(); });
+    dotsWrap.appendChild(d);
+  });
+
+  function goTo(idx) {
+    imgs[current].classList.remove('active');
+    dotsWrap.children[current].classList.remove('active');
+    current = idx;
+    imgs[current].classList.add('active');
+    dotsWrap.children[current].classList.add('active');
+  }
+
+  function next() { goTo((current + 1) % imgs.length); }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, 3200);
+  }
+
+  gallery.addEventListener('click', () => { next(); resetTimer(); });
+
+  resetTimer();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initGallery('gallery-leggings');
+  initGallery('gallery-dryfit');
+});
+
 // ── PALETTE HOVER LABEL ─────────────────────────────────────
 document.querySelectorAll('.palette-item').forEach(item => {
   item.addEventListener('click', () => {
