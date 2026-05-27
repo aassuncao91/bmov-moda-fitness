@@ -46,7 +46,7 @@ if (form) {
     const msg = encodeURIComponent(
       `Olá, Bmov Moda Fitness! 💪\n\nMeu nome é *${nome}*\nWhatsApp: ${tel}\nTenho interesse em: *${interesse}*\n\nVim pelo site e quero saber mais!`
     );
-    window.open(`https://wa.me/5511999999999?text=${msg}`, '_blank');
+    window.open(`https://wa.me/5521998464517?text=${msg}`, '_blank');
     form.reset();
   });
 }
@@ -102,6 +102,6 @@ document.querySelectorAll('.palette-item').forEach(item => {
     const msg = encodeURIComponent(
       `Olá! Vi a cor *${cor}* no site da Bmov e quero saber mais sobre os produtos nessa cor! 🎨`
     );
-    window.open(`https://wa.me/5511999999999?text=${msg}`, '_blank');
+    window.open(`https://wa.me/5521998464517?text=${msg}`, '_blank');
   });
 });
