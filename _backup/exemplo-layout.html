@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bmov — Exemplo de Layout Loja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:  #25D366;
+      --green2: #1ebe5d;
+      --brown:  #7B3A22;
+      --cream:  #FAF7F4;
+      --black:  #1A1A1A;
+      --gray:   #6B7280;
+      --border: #E5E7EB;
+      --red:    #EF4444;
+    }
+    body { font-family: 'Inter', sans-serif; background: #f5f5f5; color: var(--black); padding-bottom: 80px; }
+
+    /* ── TOP BAR ─────────────────────────────── */
+    .topbar {
+      background: var(--black);
+      color: #fff;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 8px 16px;
+    }
+
+    /* ── NAV ─────────────────────────────────── */
+    .nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; text-decoration: none; color: var(--black); }
+    .nav__logo span { color: var(--brown); }
+    .nav__cta {
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── HERO MINI ───────────────────────────── */
+    .hero-mini {
+      background: linear-gradient(135deg, #2C1810 0%, #5C2A14 100%);
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px 50px;
+    }
+    .hero-mini h1 { font-size: clamp(1.6rem, 5vw, 2.8rem); font-weight: 800; line-height: 1.15; margin-bottom: 10px; }
+    .hero-mini h1 em { color: var(--green); font-style: normal; }
+    .hero-mini p { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-bottom: 24px; }
+    .hero-mini .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-wa-lg {
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    /* ── TRUST ROW ───────────────────────────── */
+    .trust {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .trust__item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray);
+      white-space: nowrap;
+      border-right: 1px solid var(--border);
+    }
+    .trust__item:last-child { border-right: none; }
+    .trust__icon { font-size: 1.1rem; }
+
+    /* ── FILTROS ─────────────────────────────── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      padding: 20px 16px 10px;
+      overflow-x: auto;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .filter-btn {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      color: var(--gray);
+      transition: all .2s;
+    }
+    .filter-btn.active {
+      background: var(--black);
+      border-color: var(--black);
+      color: #fff;
+    }
+
+    /* ── SORT/COUNT BAR ──────────────────────── */
+    .sort-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+      font-size: 0.82rem;
+      color: var(--gray);
+    }
+    .sort-bar strong { color: var(--black); }
+
+    /* ── GRID DE PRODUTOS ────────────────────── */
+    .produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      padding: 0 16px 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── CARD ────────────────────────────────── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+
+    .card__img-wrap {
+      position: relative;
+      background: #f0ebe3;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .card__img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+    }
+    /* placeholder se sem imagem */
+    .card__img-ph {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #e8ddd4, #d5c9bc);
+      font-size: 3rem;
+    }
+    .card__badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 50px;
+      letter-spacing: 0.04em;
+    }
+    .card__badge--new {
+      background: var(--brown);
+    }
+    .card__fav {
+      position: absolute;
+      top: 10px; right: 12px;
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .card__body {
+      padding: 14px 14px 6px;
+      flex: 1;
+    }
+    .card__cat {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--brown);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card__name {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    /* Avaliação inline */
+    .card__stars {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+      font-size: 0.78rem;
+      color: var(--gray);
+    }
+    .stars { color: #F59E0B; letter-spacing: -1px; }
+
+    /* Preço */
+    .card__price {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .card__price .price-now {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: var(--black);
+    }
+    .card__price .price-old {
+      font-size: 0.82rem;
+      color: var(--gray);
+      text-decoration: line-through;
+    }
+    .card__price .price-install {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    /* Seletor de tamanhos */
+    .card__sizes {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .size-btn {
+      border: 1.5px solid var(--border);
+      background: none;
+      border-radius: 6px;
+      width: 36px; height: 30px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--black);
+      transition: all .15s;
+    }
+    .size-btn:hover, .size-btn.selected {
+      background: var(--black);
+      border-color: var(--black);
+      color: #fff;
+    }
+    .size-btn.esgotado {
+      opacity: 0.3;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    /* Estoque / urgência */
+    .card__stock {
+      font-size: 0.74rem;
+      color: var(--red);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    /* CTA */
+    .card__footer {
+      padding: 0 14px 14px;
+    }
+    .btn-comprar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: background .2s;
+    }
+    .btn-comprar:hover { background: var(--green2); }
+
+    /* ── SEÇÃO DESTAQUE (1 produto em foco) ──── */
+    .destaque {
+      background: #fff;
+      border-radius: 16px;
+      border: 2px solid var(--green);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      max-width: 1100px;
+      margin: 0 auto 24px;
+    }
+    @media(max-width:600px){ .destaque { grid-template-columns: 1fr; } }
+    .destaque__img {
+      background: linear-gradient(160deg, #e8ddd4, #d5c9bc);
+      min-height: 320px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+    }
+    .destaque__body {
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .destaque__label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .destaque__body h2 { font-size: 1.7rem; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
+    .destaque__body p { font-size: 0.9rem; color: var(--gray); margin-bottom: 16px; line-height: 1.6; }
+    .destaque__price { font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; }
+    .destaque__price small { font-size: 0.85rem; font-weight: 400; color: var(--gray); }
+
+    /* ── STICKY BAR ──────────────────────────── */
+    .sticky-wa-bar {
+      display: none;
+    }
+    @media(max-width: 900px) {
+      .sticky-wa-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: var(--green);
+        color: #fff;
+        text-decoration: none;
+        padding: 16px 24px;
+        font-weight: 700;
+        font-size: 1rem;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        z-index: 9999;
+        box-shadow: 0 -4px 20px rgba(37,211,102,0.4);
+      }
+    }
+
+    /* ── SEÇÃO COR ───────────────────────────── */
+    .cores-section {
+      background: #fff;
+      padding: 40px 20px;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .cores-section h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+    .cores-section p { color: var(--gray); font-size: 0.88rem; margin-bottom: 24px; }
+    .cores-grid {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 500px;
+      margin: 0 auto 24px;
+    }
+    .cor-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    .cor-btn:hover, .cor-btn.selected { transform: scale(1.15); border-color: var(--black); }
+
+    /* ── DEPOIMENTOS ─────────────────────────── */
+    .depos {
+      padding: 40px 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .depos h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; text-align: center; }
+    .depos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .depo-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+    .depo-card .stars { font-size: 0.95rem; margin-bottom: 8px; display: block; }
+    .depo-card p { font-size: 0.85rem; color: #374151; line-height: 1.55; margin-bottom: 12px; }
+    .depo-card .depo-autor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .depo-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brown), #c45f33);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    /* Note de rodapé */
+    .nota {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.7rem;
+      color: #999;
+      background: var(--black);
+      color: rgba(255,255,255,0.4);
+      margin-top: 20px;
+    }
+    .nota strong { color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">🚚 Frete grátis acima de R$ 199 &nbsp;·&nbsp; 💳 6x sem juros &nbsp;·&nbsp; 🔄 Troca grátis em 30 dias</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav__logo">Bmov<span>.</span></a>
+  <a href="https://wa.me/5521998464517" class="nav__cta">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Fale conosco
+  </a>
+</nav>
+
+<!-- HERO MINI -->
+<section class="hero-mini">
+  <h1>Moda Fitness<br/><em>Zero Transparência</em></h1>
+  <p>Poliamida exclusiva · Do P ao GG · Entrega em todo Brasil</p>
+  <div class="hero-btns">
+    <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20ver%20os%20produtos%20da%20Bmov!" class="btn-wa-lg">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Comprar no WhatsApp
+    </a>
+    <a href="#produtos" class="btn-outline">Ver produtos ↓</a>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="trust__item"><span class="trust__icon">🚚</span> Entrega nacional</div>
+  <div class="trust__item"><span class="trust__icon">💳</span> 6x sem juros</div>
+  <div class="trust__item"><span class="trust__icon">🔒</span> Compra segura</div>
+  <div class="trust__item"><span class="trust__icon">🔄</span> Troca em 30 dias</div>
+</div>
+
+<!-- PRODUTO DESTAQUE -->
+<div style="padding: 24px 16px 0; max-width:1100px; margin:0 auto;">
+  <p style="font-size:.75rem; font-weight:700; letter-spacing:.1em; color:var(--brown); text-transform:uppercase; margin-bottom:12px;">⭐ Mais vendido</p>
+</div>
+<div style="padding: 0 16px;">
+  <div class="destaque">
+    <div class="destaque__img">🩳</div>
+    <div class="destaque__body">
+      <div class="destaque__label">🔥 Mais vendido da semana</div>
+      <h2>Short Luna<br/>Fitness</h2>
+      <p>Cintura alta com cós duplo, poliamida zero transparência, perfeito para treinos de alta intensidade.</p>
+      <div class="destaque__price">R$ 89,90 <small>ou 6x de R$ 14,98</small></div>
+      <div style="display:flex; gap:6px; margin-bottom:20px; flex-wrap:wrap;">
+        <button class="size-btn">P</button>
+        <button class="size-btn selected">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20o%20Short%20Luna%20tamanho%20M!" class="btn-comprar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora — R$ 89,90
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filters" id="produtos">
+  <button class="filter-btn active" onclick="setFilter(this,'todos')">Todos (8)</button>
+  <button class="filter-btn" onclick="setFilter(this,'short')">Shorts (2)</button>
+  <button class="filter-btn" onclick="setFilter(this,'legging')">Leggings (2)</button>
+  <button class="filter-btn" onclick="setFilter(this,'top')">Tops (2)</button>
+  <button class="filter-btn" onclick="setFilter(this,'macacao')">Macacão (1)</button>
+  <button class="filter-btn" onclick="setFilter(this,'dryfit')">Dry Fit (1)</button>
+</div>
+<div class="sort-bar">
+  <span><strong>8 produtos</strong> encontrados</span>
+  <span style="color:#6B7280; font-size:0.8rem;">⭐ 4.9/5 · 120+ avaliações</span>
+</div>
+
+<!-- GRID DE PRODUTOS -->
+<div class="produtos" id="prodGrid">
+
+  <!-- Card 1 -->
+  <div class="card" data-cat="short">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">🩳</div>
+      <span class="card__badge">-10%</span>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Short</div>
+      <div class="card__name">Short Luna Fitness</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 4.9 <span>(48)</span></div>
+      <div class="card__price">
+        <span class="price-now">R$ 89,90</span>
+        <span class="price-old">R$ 99,90</span>
+      </div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 14,98 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+      <div class="card__stock">🔴 Últimas 4 unidades!</div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20o%20Short%20Luna%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card" data-cat="short">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">✨</div>
+      <span class="card__badge card__badge--new">Novo</span>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Short</div>
+      <div class="card__name">Short Aura Fitness</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 5.0 <span>(22)</span></div>
+      <div class="card__price">
+        <span class="price-now">R$ 94,90</span>
+      </div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 15,81 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn esgotado">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20o%20Short%20Aura%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card" data-cat="legging">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">🦵</div>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Legging</div>
+      <div class="card__name">Legging Luna Fitness</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 4.8 <span>(61)</span></div>
+      <div class="card__price">
+        <span class="price-now">R$ 99,90</span>
+      </div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 16,65 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20a%20Legging%20Luna%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="card" data-cat="legging">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">✨</div>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Legging</div>
+      <div class="card__name">Legging Aura Fitness</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 4.9 <span>(37)</span></div>
+      <div class="card__price">
+        <span class="price-now">R$ 104,90</span>
+      </div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 17,48 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20a%20Legging%20Aura%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="card" data-cat="top">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">👚</div>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Top</div>
+      <div class="card__name">Top Alça Fina</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 4.9 <span>(29)</span></div>
+      <div class="card__price"><span class="price-now">R$ 69,90</span></div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 11,65 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20o%20Top%20Alça%20Fina%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 6 -->
+  <div class="card" data-cat="top">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">🏊</div>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Top</div>
+      <div class="card__name">Top Nadador</div>
+      <div class="card__stars"><span class="stars">★★★★☆</span> 4.7 <span>(18)</span></div>
+      <div class="card__price"><span class="price-now">R$ 74,90</span></div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 12,48 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20o%20Top%20Nadador%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 7 -->
+  <div class="card" data-cat="macacao">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">👗</div>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Macacão</div>
+      <div class="card__name">Macacão Longo Fitness</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 5.0 <span>(11)</span></div>
+      <div class="card__price"><span class="price-now">R$ 149,90</span></div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 24,98 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20o%20Macacão%20Longo%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 8 -->
+  <div class="card" data-cat="dryfit">
+    <div class="card__img-wrap">
+      <div class="card__img-ph">👕</div>
+      <button class="card__fav">♡</button>
+    </div>
+    <div class="card__body">
+      <div class="card__cat">Dry Fit</div>
+      <div class="card__name">Camisa Dry Fit</div>
+      <div class="card__stars"><span class="stars">★★★★★</span> 4.8 <span>(15)</span></div>
+      <div class="card__price"><span class="price-now">R$ 79,90</span></div>
+      <div class="card__price"><span class="price-install" style="margin-top:-6px">6x de R$ 13,32 sem juros</span></div>
+      <div class="card__sizes">
+        <button class="size-btn">P</button>
+        <button class="size-btn">M</button>
+        <button class="size-btn">G</button>
+        <button class="size-btn">GG</button>
+      </div>
+    </div>
+    <div class="card__footer">
+      <a href="https://wa.me/5521998464517?text=Olá!%20Quero%20a%20Camisa%20Dry%20Fit%20da%20Bmov!" class="btn-comprar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar agora
+      </a>
+    </div>
+  </div>
+
+</div><!-- /produtos -->
+
+<!-- DEPOIMENTOS -->
+<div class="depos">
+  <h2>⭐ O que as clientes dizem</h2>
+  <div class="depos-grid">
+    <div class="depo-card">
+      <span class="stars">★★★★★</span>
+      <p>"Amei! O tecido é incrível, não transparece nada mesmo no agachamento. Já pedi o segundo!"</p>
+      <div class="depo-autor"><div class="depo-avatar">J</div><span>Juliana M. — RJ</span></div>
+    </div>
+    <div class="depo-card">
+      <span class="stars">★★★★★</span>
+      <p>"Atendimento pelo WhatsApp super rápido, recebi em 3 dias. Short ficou perfeito no M."</p>
+      <div class="depo-autor"><div class="depo-avatar">C</div><span>Camila S. — SP</span></div>
+    </div>
+    <div class="depo-card">
+      <span class="stars">★★★★★</span>
+      <p>"Qualidade absurda pelo preço. Comprei legging e top, combinam demais. Recomendo!"</p>
+      <div class="depo-autor"><div class="depo-avatar">P</div><span>Patricia L. — MG</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTA RODAPÉ -->
+<div class="nota">Este é um <strong>arquivo de exemplo</strong> — abra <code>exemplo-layout.html</code> no navegador para visualizar o layout proposto.</div>
+
+<!-- STICKY BAR MOBILE -->
+<a href="https://wa.me/5521998464517?text=Olá!%20Quero%20comprar%20na%20Bmov!" class="sticky-wa-bar">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  💬 Comprar via WhatsApp
+</a>
+
+<script>
+  // Filtro de categorias
+  function setFilter(btn, cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.card').forEach(card => {
+      if (cat === 'todos' || card.dataset.cat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Seletor de tamanhos
+  document.querySelectorAll('.card__sizes').forEach(group => {
+    group.querySelectorAll('.size-btn:not(.esgotado)').forEach(btn => {
+      btn.addEventListener('click', function() {
+        group.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  });
+
+  // Favoritos
+  document.querySelectorAll('.card__fav').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.textContent = this.textContent === '♡' ? '♥' : '♡';
+      this.style.color = this.textContent === '♥' ? '#EF4444' : '';
+    });
+  });
+</script>
+</body>
+</html>

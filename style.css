@@ -1207,6 +1207,91 @@ button { font-family: inherit; }
   flex-wrap: wrap;
 }
 
+/* ── WHATSAPP FLUTUANTE ────────────────────────────────────── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 500;
+  width: 58px;
+  height: 58px;
+  background: var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(37,211,102,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 32px rgba(37,211,102,0.55);
+}
+.whatsapp-float::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(37,211,102,0.35);
+  animation: pulse-ring 2s ease-out infinite;
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* ── STICKY CTA MOBILE ─────────────────────────────────────── */
+.sticky-cta-mobile {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 490;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.97);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  gap: 10px;
+}
+.sticky-cta-mobile a {
+  flex: 1;
+  text-align: center;
+}
+@media (max-width: 860px) {
+  .sticky-cta-mobile { display: flex; }
+  .whatsapp-float { bottom: 84px; right: 16px; width: 50px; height: 50px; }
+  body { padding-bottom: 72px; }
+}
+
+/* ── PROVA SOCIAL NAS CATEGORIAS ───────────────────────────── */
+.cat-social-proof {
+  background: var(--cream);
+  border-top: 1px solid var(--beige);
+  padding: 52px 0;
+}
+.cat-social-proof .section-header { margin-bottom: 32px; }
+.cat-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 700px) { .cat-proof-grid { grid-template-columns: 1fr; } }
+
+/* ── FOOTER CONTATO ────────────────────────────────────────── */
+.footer__contact h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 16px;
+}
+.footer__contact p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 8px;
+}
+
 /* ── RESPONSIVE HELPERS ────────────────────────────────────── */
 @media (max-width: 640px) {
   .dif-grid { grid-template-columns: repeat(2, 1fr); }
