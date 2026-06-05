@@ -1,5 +1,5 @@
 // ── NAV SCROLL ────────────────────────────────────────────
-const nav = document.getElementById('nav');
+const nav = document.getElementById('siteHeader') || document.getElementById('nav');
 if (nav) {
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
@@ -56,3 +56,17 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq__item.open').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+
+// ── POPUP BOAS-VINDAS ──────────────────────────────────────
+(function() {
+  const popup = document.getElementById('popup');
+  if (!popup) return;
+  if (sessionStorage.getItem('bmov_popup_seen')) return;
+  setTimeout(() => {
+    popup.classList.add('show');
+    sessionStorage.setItem('bmov_popup_seen', '1');
+  }, 4000);
+  popup.addEventListener('click', (e) => {
+    if (e.target === popup) popup.classList.add('hidden');
+  });
+})();
